@@ -18,6 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)moduleDidInit:(ALContext *)context;
 
+
+/**
+ 是否需要缓存，默认不缓存在内存中
+
+ @return 是否缓存在内存中
+ */
+- (BOOL)needCache;
+
 @optional
 
 /**

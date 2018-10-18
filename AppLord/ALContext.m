@@ -233,9 +233,14 @@ dispatch_semaphore_signal(_configLock);
 {
     NSAssert([NSThread isMainThread], @"must run in main thread");
     id<ALModule> module = [[moduleClass alloc] init];
-    [_modulesByName setObject:module forKey:NSStringFromClass(moduleClass)];
     if ([module respondsToSelector:@selector(moduleDidInit:)]) {
         [module moduleDidInit:self];
+    }
+    
+    if ([module respondsToSelector:@selector(needCache)]) {
+        if ([module needCache]) {
+            [_modulesByName setObject:module forKey:NSStringFromClass(moduleClass)];
+        }
     }
     return module;
 }
