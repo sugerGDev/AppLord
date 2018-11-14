@@ -64,6 +64,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (__nullable id)findModule:(Class)moduleClass;
 
+
+/**
+移除cache
+
+ @param cacheCls cache 的cls
+ */
+- (void)removeCacheForClass:(Class)cacheCls;
 @end
 
 @interface ALContext (Task)

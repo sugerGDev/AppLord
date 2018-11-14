@@ -62,7 +62,7 @@ dispatch_semaphore_signal(_configLock);
 {
     NSMutableDictionary<NSString *, id<ALModule>>      *_modulesByName;
     NSMutableDictionary<NSString *, Class<ALModule>>   *_moduleClassesByName;
-
+    
     NSMutableDictionary<NSString *, id<ALService>>     *_servicesByName;
     NSMutableDictionary<NSString *, Class<ALService>>  *_serviceClassesByName;
     
@@ -94,7 +94,7 @@ dispatch_semaphore_signal(_configLock);
     if (self) {
         _modulesByName = [[NSMutableDictionary alloc] init];
         _moduleClassesByName = [[NSMutableDictionary alloc] init];
-
+        
         _servicesByName = [[NSMutableDictionary alloc] init];
         _serviceClassesByName = [[NSMutableDictionary alloc] init];
         
@@ -242,6 +242,7 @@ dispatch_semaphore_signal(_configLock);
             [_modulesByName setObject:module forKey:NSStringFromClass(moduleClass)];
         }
     }
+    
     return module;
 }
 
@@ -262,6 +263,10 @@ dispatch_semaphore_signal(_configLock);
         
         [self setupModuleWithClass:moduleClass];
     }
+}
+
+- (void)removeCacheForClass:(Class)cacheCls {
+    [_modulesByName removeObjectForKey:NSStringFromClass(cacheCls)];
 }
 
 #pragma mark - task

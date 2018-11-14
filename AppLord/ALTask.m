@@ -67,7 +67,6 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 
 @property (nonatomic, assign) ALTaskState state;
 @property (nonatomic, strong, readonly) NSRecursiveLock *lock;
-@property (nonatomic, copy) NSError *(^mainBlock)(ALTask *task);
 
 @end
 
@@ -76,13 +75,6 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 @synthesize lock = _lock;
 
 #pragma mark - init
-
-+ (instancetype)taskWithBlock:(NSError *(^)(ALTask *))block
-{
-    ALTask *task = [[ALTask alloc] init];
-    [task setMainBlock:block];
-    return task;
-}
 
 - (instancetype)init
 {
@@ -111,7 +103,15 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
         NSLog(@"%@ begin", NSStringFromClass(self.class));
         [self.lock unlock];
  
-        [self executeTask];
+        if ([self needMainThread]) {
+            if ([NSThread isMainThread]) {
+                [self executeTask];
+            } else {
+                [self performSelectorOnMainThread:@selector(executeTask) withObject:nil waitUntilDone:NO];
+            }
+        } else {
+            [self executeTask];
+        }
     } else {
         [self.lock unlock];
     }
@@ -121,12 +121,7 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 
 - (void)executeTask
 {
-    if (self.mainBlock) {
-        NSError *error = self.mainBlock(self);
-        [self finishWithError:error];
-    } else {
-        @throw [NSException exceptionWithName:@"ALTaskException" reason:@"need override" userInfo:nil];
-    }
+    @throw [NSException exceptionWithName:@"ALTaskException" reason:@"need override" userInfo:nil];
 }
 
 - (void)finishWithError:(NSError *)error
@@ -144,6 +139,11 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 
     }
     [self.lock unlock];
+}
+
+- (BOOL)needMainThread
+{
+    return YES;
 }
 
 - (void)cancel
@@ -179,11 +179,6 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 - (BOOL)isExecuting
 {
     return self.state == ALTaskStateLoading;
-}
-
-- (BOOL)isCancelled
-{
-    return self.state == ALTaskStateCanceled;
 }
 
 - (void)setState:(ALTaskState)state
