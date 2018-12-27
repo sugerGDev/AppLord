@@ -8,14 +8,6 @@
 
 #import "ALTask.h"
 
-typedef NS_ENUM(NSInteger, ALTaskState) {
-    ALTaskStateCreate,
-    ALTaskStateReady = 1,
-    ALTaskStateLoading,
-    ALTaskStateSuccessed,
-    ALTaskStateFailure,
-    ALTaskStateCanceled,
-};
 
 static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskState toState) {
     
@@ -65,7 +57,6 @@ static inline BOOL ALTaskStateTransitionIsValid(ALTaskState fromState, ALTaskSta
 
 @interface ALTask ()
 
-@property (nonatomic, assign) ALTaskState state;
 @property (nonatomic, strong, readonly) NSRecursiveLock *lock;
 
 @end

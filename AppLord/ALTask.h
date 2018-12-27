@@ -8,11 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, ALTaskState) {
+    ALTaskStateCreate,
+    ALTaskStateReady = 1,
+    ALTaskStateLoading,
+    ALTaskStateSuccessed,
+    ALTaskStateFailure,
+    ALTaskStateCanceled,
+};
+
 /**
  *  task base class, 
  *  DO NOT implement `start` or `main` method in subclass.
  */
 @interface ALTask : NSOperation
+
+
+@property (nonatomic, assign) ALTaskState state;
 
 @property (nonatomic, strong) NSError *error;
 

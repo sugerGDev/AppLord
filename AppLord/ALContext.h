@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (instancetype)sharedContext;
 
+@property(nonatomic, strong)  NSOperationQueue    *taskQueue;
 @end
 
 @interface ALContext (Service)

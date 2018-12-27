@@ -77,6 +77,7 @@ dispatch_semaphore_signal(_configLock);
 @end
 
 @implementation ALContext
+@synthesize taskQueue = _taskQueue;
 
 + (instancetype)sharedContext
 {
