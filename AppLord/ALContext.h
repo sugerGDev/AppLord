@@ -90,6 +90,16 @@ NS_ASSUME_NONNULL_BEGIN
  *  add a task in the default background operation queue.
  */
 - (void)addTask:(NSOperation *)task;
+/**
+ 当前请TaskQueue
+
+ @return 返回队列对象
+ */
+- (NSOperationQueue *)currentTaskQueue;
+/**
+ 取消队列
+ */
+- (void)cancelAllTasks;
 
 @end
 

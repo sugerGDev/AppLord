@@ -294,6 +294,25 @@ dispatch_semaphore_signal(_configLock);
     [_taskQueue addOperation:task];
 }
 
+-(NSOperationQueue *)currentTaskQueue {
+    return _taskQueue;
+}
+
+- (void)cancelAllTasks{
+    
+    [_taskQueue cancelAllOperations];
+    
+    NSArray* reversedArray = [[_taskQueue.operations reverseObjectEnumerator] allObjects];
+    __block NSOperation *preOp = nil;
+    [reversedArray enumerateObjectsUsingBlock:^(NSOperation *  obj, NSUInteger idx, BOOL *  stop) {
+        if (!preOp) {
+            preOp = obj;
+        }else {
+            [preOp removeDependency:obj];
+        }
+    }];
+    
+}
 #pragma mark - config
 
 - (void)setObject:(id)value forKey:(NSString *)key

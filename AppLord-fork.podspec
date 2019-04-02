@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name         = "AppLord-fork"
-  s.version      = "1.2.3"
+  s.version      = "1.2.4"
   s.summary      = "The lord of iOS app modules"
 
   s.description  = <<-DESC
 
-                   * Module: module management 
-                   * Service Between modules 
+                   * Module: module management
+                   * Service Between modules
                    * Task manage global tasks
                    DESC
 
