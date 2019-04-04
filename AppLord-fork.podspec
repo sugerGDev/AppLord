@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AppLord-fork"
-  s.version      = "1.2.4"
+  s.version      = "1.2.6"
   s.summary      = "The lord of iOS app modules"
 
   s.description  = <<-DESC

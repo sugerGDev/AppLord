@@ -19,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)moduleDidInit:(ALContext *)context;
 //
 
+
+@optional
+
+
 /**
  是否需要缓存，默认不缓存在内存中
  
@@ -26,7 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)needCache;
 
-@optional
 
 /**
  *  config when load this module, init when main thread is idle
